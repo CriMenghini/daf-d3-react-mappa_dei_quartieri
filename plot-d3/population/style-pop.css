@@ -45,6 +45,8 @@ div.tooltipLeft {
   pointer-events: none;
 }
 
+
+
 div.tooltipRight {
   position: absolute;
   text-align: right;
@@ -57,4 +59,11 @@ div.tooltipRight {
   pointer-events: none;
 }
 
+
+
+.middle-text {
+      fill: black;
+      font-size: 32px;
+      font-family: 'Roboto', sans-serif;
+    }
 
