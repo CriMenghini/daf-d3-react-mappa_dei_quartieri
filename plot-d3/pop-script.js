@@ -5,9 +5,9 @@ var w = 1200,
 
 // margin.middle is distance from center line to each y-axis
 var margin = {
-  top: 20,
+  top: 30,
   right: 20,
-  bottom: 24,
+  bottom: 50,
   left: 20,
   middle: 28
 };
@@ -107,9 +107,43 @@ var rightBarGroup = svg.append('g')
   .attr('transform', translation(pointB, 0));
 
 // Tooltip
+function mouseover(d) {
+  div.style("display", "inline");
+}
+
+function mouseout() {
+  div.style("display", "none");
+}
+
+
+function mousemoveLeft(d) {
+  div.transition()
+         .duration(200)
+         .style("opacity", 1);
+       div.html("Il " +  d3.format(".0%")(percentageMale(d.male)) + ' degli uomini residenti è di età compresa tra '+ d.group)
+         .style("left", (d3.event.pageX - 90) + "px")
+         .style("top", (d3.event.pageY - 28) + "px")
+         .style("background", "MintCream");
+}
+
+function mousemoveRight(d) {
+  div.transition()
+         .duration(200)
+         .style("opacity", 1);
+       div.html("Il " +  d3.format(".0%")(percentageFemale(d.female)) + ' delle donne residenti è di età compresa tra '+ d.group)
+         .style("left", (d3.event.pageX + 20) + "px")
+         .style("top", (d3.event.pageY - 28) + "px")
+         .style("background", "MintCream");
+}
+
 var div = d3.select("body").append("div")
     .attr("class", "tooltipLeft")
-    .style("opacity", 0);
+    .style("display", "none");
+
+var div = d3.select("body").append("div")
+    .attr("class", "tooltipRight")
+    .style("display", "none");
+
 
 
 // DRAW AXES
@@ -120,6 +154,14 @@ svg.append('g')
   .selectAll('text')
   .style('text-anchor', 'middle');
 
+// text label for the x axis
+svg.append("text")
+  .style("text-anchor", "start")
+  .attr("y", -28 + margin.left)
+  .attr("x", h - 35)
+  .text("Fasce d'età");
+
+
 svg.append('g')
   .attr('class', 'axis y right')
   .attr('transform', translation(pointB, 0))
@@ -129,6 +171,12 @@ svg.append('g')
   .attr('class', 'axis x left')
   .attr('transform', translation(0, h))
   .call(xAxisLeft);
+
+svg.append("text")
+  .style("text-anchor", "start")
+  .attr("y", 638 )
+  .attr("x", h - 125)
+  .text("Percentuale (%) sul totale dei residenti");
 
 svg.append('g')
   .attr('class', 'axis x right')
@@ -144,16 +192,13 @@ leftBarGroup.selectAll('.bar.left')
     .attr('y', function(d) { return yScale(d.group); })
     .attr('width', function(d) { return xScale(percentage(d.male)); })
     .attr('height', yScale.bandwidth() - 3)
-    .on("mouseover", function(d) {
-       div.transition()
-         .duration(200)
-         .style("opacity", .9);
-       div.html("Il " +  d3.format(".0%")(percentageMale(d.male)) + '<br/> degli uomini residenti sono di età compresa tra '+ d.group)
-         .style("left", (d3.event.pageX) + "px")
-         .style("top", (d3.event.pageY - 28) + "px");
-       });
-    //.on("mouseout", function mouseout() {div.style("display", "none");});
-    //.style("stroke", "blue");
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemoveLeft)
+    .on("mouseout", mouseout);
+
+
+
+
 
 rightBarGroup.selectAll('.bar.right')
   .data(exampleData)
@@ -162,8 +207,14 @@ rightBarGroup.selectAll('.bar.right')
     .attr('x', 0)
     .attr('y', function(d) { return yScale(d.group); })
     .attr('width', function(d) { return xScale(percentage(d.female)); })
-    .attr('height', yScale.bandwidth() - 3);
-    //.style("stroke", "pink");
+    .attr('height', yScale.bandwidth() - 3)
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemoveRight)
+    .on("mouseout", mouseout);
+
+
+
+
 
 
 // so sick of string concatenation for translations
