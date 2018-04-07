@@ -1,0 +1,49 @@
+svg {
+  border: 1px solid #ccc;
+}
+
+.axis line,
+.axis path {
+  shape-rendering: crispEdges;
+  fill: transparent;
+  stroke: #555;
+}
+.axis text {
+  font-size: 11px;
+}
+
+
+.bar {
+  fill-opacity: 0.5;
+}
+.bar.left {
+  fill: steelblue;
+  stroke: blue
+}
+.bar.right {
+  fill: firebrick;
+  stroke: pink
+}
+
+
+.bar.right:hover {
+  fill: pink ;
+}
+
+.bar.left:hover {
+  fill: blue ;
+}
+
+div.tooltipLeft {
+  position: absolute;
+  text-align: right;
+  width: 60px;
+  height: 13%;
+  padding: 10px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 3px;
+  border-radius: 10px;
+  pointer-events: none;
+}
+
